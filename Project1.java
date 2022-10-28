@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /*
 - Project 1
 - Daniel Gonzalez, Gianna Colon, and David Valdes
@@ -7,8 +9,86 @@
 public class Project1 {
     public static void main(String[] args) {
         // Test code goes here
+        int input = 0;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Welcome to my Personal Management System");
+        do{
+            //THIS SWITCH CASE IS WORKING. FINALLY! 
+            displayMenu();
+            while (!scan.hasNextInt()){
+                System.out.println("Invalid Entry- please try again");
+                displayMenu();
+                scan.next();
+            }
+            input = scan.nextInt();
+            switch(input)
+            {
+                case 1:
+                    //Function for entering faculty info
+                    System.out.println("Case 1 works");
+                    
+                    
+                    
+                    break;
+                case 2:
+                    //Function for entering student info
+                    
+                    System.out.println("Case 2 works");
+                    
+                    
+                    break;
+                case 3:
+                    //Function for printing tuition invoice
+                    System.out.println("Case 3 works");
+                    
+                    
+                    break;
+                case 4:
+                    //Function for printing faculty information
+                    System.out.println("Case 4 works");
+                    
+                    break;
+                case 5:
+                    //Funct. for Entering the information of a staff member
+                    System.out.println("Case 5 works");
+                    break;
+
+                case 6:
+                    //Funct. for Printing the information of a staff member.
+                    System.out.println("Case 6 works");
+                    break;
+
+                case 7:
+                    //Exits user from program with a cold cold goodbye.
+                    System.out.println("Goodbye.");
+                    break;
+
+                default:
+                System.out.println("Invalid Entry- please try again.");
+                break;
+                }
+            
+        } while (input != 7);
     }
+    
+//Display Menu Function
+    private static void displayMenu() {
+    System.out.println("Choose one of the options: ");
+    System.out.println();
+    System.out.println("1-  Enter the information a faculty");
+    System.out.println("2-  Enter the information of a student ");
+    System.out.println("3-  Print tuition invoice for a student");
+    System.out.println("4-  Print faculty information ");
+    System.out.println("5-  Enter the information of a staff member ");
+    System.out.println("6-  Print the information of a staff member ");
+    System.out.println("7-  Exit Program  ");
+    System.out.println();
+    System.out.println();
+    System.out.println("            Enter your selection:  ");
 }
+
+    }
+
 //-------------------------------------------------
 abstract class Person {
     // Variables
@@ -198,3 +278,4 @@ class Personnel {
         list = new Person[100];
     }
 }
+
