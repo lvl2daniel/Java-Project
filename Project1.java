@@ -31,8 +31,8 @@ class Staff extends Employee {
 
 }
 //-------------------------------------------------
-class Personnel {  // private field = array of type Person
-    private Person[] list;
+class Personnel {
+    private Person[] list;  // private field = array of type Person
 
     // Constructor
     public Personnel() {
