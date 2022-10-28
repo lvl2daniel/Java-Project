@@ -1,6 +1,7 @@
 /*
 - Project 1
 - Daniel Gonzalez, Gianna Colon, and David Valdes
+- We used protected instead of private within the abstract classes, so that they can still be pulled from inheritors
 */
 
 public class Project1 {
