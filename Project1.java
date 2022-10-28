@@ -1,6 +1,6 @@
 /*
 - Project 1
-- Daniel Gonzalez, Gianna Colon, and cealer FIXME
+- Daniel Gonzalez, Gianna Colon, and David Valdes
 */
 
 public class Project1 {
@@ -11,8 +11,8 @@ public class Project1 {
 //-------------------------------------------------
 abstract class Person {
     // Variables
-    private String fullName;
-    private String id;
+    protected String fullName;
+    protected String id;
 
     // Constructors
     public Person(String fullName, String id) {
@@ -79,22 +79,73 @@ class Student extends Person {
     }
 
     public double calculateTuition(double gpa, int creditHours) {
+        return 0;  // FIXME
+    }
+}
+//-------------------------------------------------
+abstract class Employee extends Person {
+    protected String department;
+
+    public Employee(String fullName, String id, String department) {
+        super(fullName, id);
+        this.department = department;
+    }
+
+    // Getters and Setters
+    public String getDepartment() {
+        return department;
+    }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+}
+//-------------------------------------------------
+class Faculty extends Employee {
+
+    private String rank;
+
+    public Faculty(String fullName, String id, String department, String rank) {
+        super(fullName, id, department);
+        this.rank = rank;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    @Override
+    public void print() {
 
     }
 }
 //-------------------------------------------------
-//-------------------------------------------------
-abstract class Employee extends Person {
-}
-//-------------------------------------------------
-class Faculty extends Employee {
-}
-//-------------------------------------------------
 class Staff extends Employee {
+    private String status;
+
+    public Staff(String fullName, String id, String department, String status) {
+        super(fullName, id, department);
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public void print() {
+
+    }
 }
 //-------------------------------------------------
 class Personnel {
     private Person[] list;  // private field = array of type Person
+
     // Constructor
     public Personnel() {
         list = new Person[100];
