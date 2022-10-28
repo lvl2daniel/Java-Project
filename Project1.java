@@ -14,8 +14,6 @@ abstract class Person {
     private String fullName;
     private String id;
 
-    // Print method
-    public abstract void print();
     // Constructors
     public Person(String fullName, String id) {
         this.fullName = fullName;
@@ -81,7 +79,7 @@ class Student extends Person {
     }
 
     public double calculateTuition(double gpa, int creditHours) {
-        
+
     }
 }
 //-------------------------------------------------
