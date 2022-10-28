@@ -43,10 +43,10 @@ abstract class Person {
 class Student extends Person {
     // Variables
     private int creditHours;
-    private final int FEE = 52;
     private double gpa;
     private double total;
     private double discount;
+    private final int FEE = 52;
     private final double COST_PER_CREDIT_HOUR = 236.45;
     private final double DISCOUNT_PERCENTAGE = 0.25;  // 25% for students who have a gpa >= 3.85
 
@@ -58,6 +58,33 @@ class Student extends Person {
     }
 
     // Getters and Setters
+
+    public int getFEE() {
+        return FEE;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getCOST_PER_CREDIT_HOUR() {
+        return COST_PER_CREDIT_HOUR;
+    }
+
+    public double getDISCOUNT_PERCENTAGE() {
+        return DISCOUNT_PERCENTAGE;
+    }
+
     public double getGpa() {
         return gpa;
     }
@@ -84,17 +111,23 @@ class Student extends Person {
         System.out.println("---------------------------------------------------------------------------");
     }
 
-    public double calculateTuition(double gpa, int creditHours) {  // FIXME
+    private double calculateTuition() {  // FIXME
         total = creditHours * COST_PER_CREDIT_HOUR;
         total += FEE;
 
         if(gpa >= 3.85) {
-            this.discount = total / DISCOUNT_PERCENTAGE;
+            discount = total * DISCOUNT_PERCENTAGE;
+            setDiscount(discount);
             total -= discount;
-            return total;
+        }
+        else {
+            discount = 0;
+            setDiscount(discount);
         }
         return total;
     }
+
+    // CREATE AN INPUT METHOD  FIXME
 }
 //-------------------------------------------------
 abstract class Employee extends Person {
