@@ -42,8 +42,13 @@ abstract class Person {
 //-------------------------------------------------
 class Student extends Person {
     // Variables
-    private double gpa;
     private int creditHours;
+    private final int FEE = 52;
+    private double gpa;
+    private double total;
+    private double discount;
+    private final double COST_PER_CREDIT_HOUR = 236.45;
+    private final double DISCOUNT_PERCENTAGE = 0.25;  // 25% for students who have a gpa >= 3.85
 
     // Constructors
     public Student(String fullName, String id, double gpa, int creditHours) {
@@ -71,16 +76,24 @@ class Student extends Person {
     @Override  // Override the print method
     public void print() {
         System.out.println("---------------------------------------------------------------------------");
-        System.out.println(getFullName() + "\t" + getId());
+        System.out.println(fullName + "\t" + id);
         System.out.println("Credit Hours: " + creditHours + " ($236.45/credit hour)");
-        System.out.println("Fees: " + fees);  // FIXME
+        System.out.println("Fees: $" + FEE);
         System.out.println();
-        System.out.println("Total payment: $" + total + "\t($" + discount + " discount applied)");  // FIXME
+        System.out.println("Total payment: $" + total + "\t($" + discount + " discount applied)");
         System.out.println("---------------------------------------------------------------------------");
     }
 
-    public double calculateTuition(double gpa, int creditHours) {
-        return 0;  // FIXME
+    public double calculateTuition(double gpa, int creditHours) {  // FIXME
+        total = creditHours * COST_PER_CREDIT_HOUR;
+        total += FEE;
+
+        if(gpa >= 3.85) {
+            this.discount = total / DISCOUNT_PERCENTAGE;
+            total -= discount;
+            return total;
+        }
+        return total;
     }
 }
 //-------------------------------------------------
@@ -118,7 +131,7 @@ class Faculty extends Employee {
     }
 
     @Override
-    public void print() {
+    public void print() {  // FIXME
 
     }
 }
@@ -139,7 +152,7 @@ class Staff extends Employee {
     }
 
     @Override
-    public void print() {
+    public void print() {  // FIXME
 
     }
 }
