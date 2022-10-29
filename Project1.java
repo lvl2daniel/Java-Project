@@ -8,7 +8,11 @@ import java.util.Scanner;
 
 public class Project1 {
     public static void main(String[] args) {
-        // Test code goes here
+        final String validRank1 = "Professor";
+        final String validRank2 = "Adjunct";
+        final String validDepartment1 = "Mathematics";
+        final String validDepartment2 = "Engineering";
+        final String validDepartment3 = "Sciences";
         int input = 0;
         Scanner scan = new Scanner(System.in);
         System.out.println("Welcome to my Personal Management System");
@@ -25,6 +29,32 @@ public class Project1 {
             {
                 case 1:
                     //Function for entering faculty info
+                    Scanner facultyInput = new Scanner(System.in);
+                    System.out.println("Enter the faculty info:");
+                    System.out.println("    Name of the faculty:");
+                    String facultyName;
+                    facultyName = facultyInput.nextLine();
+                    System.out.println("    ID:");
+                    String facultyID;
+                    facultyID = facultyInput.nextLine();
+                    System.out.println("    Rank:");
+                    String facultyRank;
+                    facultyRank = facultyInput.nextLine();
+                    while (!facultyRank.equalsIgnoreCase(validRank1) && !facultyRank.equalsIgnoreCase(validRank2))
+                    {
+                        System.out.println("''" + facultyRank + "'' is invalid" );
+                        facultyRank = facultyInput.nextLine();
+                    }
+                    System.out.println("      Department:");
+                    String facultyDepartment = facultyInput.nextLine();
+                    while (!facultyDepartment.equalsIgnoreCase(validDepartment1) && !facultyDepartment.equalsIgnoreCase(validDepartment3) && !facultyDepartment.equalsIgnoreCase(validDepartment2))
+                    {
+                        System.out.println("''" + facultyDepartment + "'' is invalid");
+                        facultyDepartment = facultyInput.nextLine();
+                    }
+                    Faculty faculty = new Faculty(facultyName, facultyID, facultyDepartment, facultyRank);
+                    //DEBUG PRINT STATEMENTS 
+                    System.out.println(faculty.getDepartment() + faculty.getFullName() + faculty.getId() + faculty.getRank());
                     System.out.println("Case 1 works");
                     
                     
@@ -61,6 +91,7 @@ public class Project1 {
                 case 7:
                     //Exits user from program with a cold cold goodbye.
                     System.out.println("Goodbye.");
+                    scan.close();
                     break;
 
                 default:
@@ -243,11 +274,22 @@ class Faculty extends Employee {
         this.rank = rank;
     }
 
+        
+
+        
+
+    
+
     @Override
     public void print() {  // FIXME
 
     }
 }
+
+    class FacultyList{
+        private Faculty[] FacultyList;
+    }
+
 //-------------------------------------------------
 class Staff extends Employee {
     private String status;
