@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Project1 {
     public static void main(String[] args) {
+        Person p;  // FIXME
         final String validRank1 = "Professor";
         final String validRank2 = "Adjunct";
         final String validDepartment1 = "Mathematics";
@@ -15,7 +16,7 @@ public class Project1 {
         final String validDepartment3 = "Sciences";
         int input = 0;
         Scanner scan = new Scanner(System.in);
-        System.out.println("Welcome to my Personal Management System");
+        System.out.println("\t\t\t\t\tWelcome to my Personnel Management System");
         do{
             //THIS SWITCH CASE IS WORKING. FINALLY! 
             displayMenu();
@@ -28,7 +29,7 @@ public class Project1 {
             switch(input)
             {
                 case 1:
-                    //Function for entering faculty info
+                    //Case for entering faculty info
                     Scanner facultyInput = new Scanner(System.in);
                     System.out.println("Enter the faculty info:");
                     System.out.println("    Name of the faculty:");
@@ -61,30 +62,49 @@ public class Project1 {
                     
                     break;
                 case 2:
-                    //Function for entering student info
-                    
+                    //Case for entering student info
+                    Scanner sc = new Scanner(System.in);
+                    System.out.println("\n\nEnter the student info:");
+                    System.out.println("\tName of the faculty:");
+                    String name;
+                    name = sc.nextLine();
+                    System.out.println("\tID:");
+                    String id;
+                    id = sc.nextLine();
+                    System.out.println("\tGpa:");
+                    double gpa;
+                    gpa = sc.nextDouble();
+                    while (gpa < 0) {
+                        System.out.println("''" + gpa + "'' is invalid" );
+                        gpa = sc.nextDouble();
+                    }
+                    System.out.println("\tCredit hours:");
+                    int creditHours = sc.nextInt();
+                    while (creditHours < 0) {
+                        System.out.println("''" + creditHours + "'' is invalid");
+                        creditHours = sc.nextInt();
+                    }
+                    p = new Student(name, id, gpa, creditHours);
                     System.out.println("Case 2 works");
-                    
-                    
                     break;
                 case 3:
-                    //Function for printing tuition invoice
+                    //Case for printing tuition invoice
                     System.out.println("Case 3 works");
-                    
+                    p.print();  // FIXME
                     
                     break;
                 case 4:
-                    //Function for printing faculty information
+                    //Case for printing faculty information
                     System.out.println("Case 4 works");
                     
                     break;
                 case 5:
-                    //Funct. for Entering the information of a staff member
+                    //Case for Entering the information of a staff member
                     System.out.println("Case 5 works");
                     break;
 
                 case 6:
-                    //Funct. for Printing the information of a staff member.
+                    //Case for Printing the information of a staff member.
                     System.out.println("Case 6 works");
                     break;
 
@@ -222,7 +242,7 @@ class Student extends Person {
         System.out.println("---------------------------------------------------------------------------");
     }
 
-    private double calculateTuition() {  // FIXME
+    private double calculateTuition() {  // Calculate the tuition of the student and check if they can get a discount
         total = creditHours * COST_PER_CREDIT_HOUR;
         total += FEE;
 
@@ -237,8 +257,6 @@ class Student extends Person {
         }
         return total;
     }
-
-    // CREATE AN INPUT METHOD  FIXME
 }
 //-------------------------------------------------
 abstract class Employee extends Person {
