@@ -116,7 +116,24 @@ public class Project1 {
                 case 4:
                     //Case for printing faculty information
                     System.out.println("Case 4 works");
-                    
+                    Scanner facultyOutput = new Scanner(System.in);
+                    System.out.println("Enter the faculty's ID:");
+                    String searchFaculty;
+                    searchFaculty = facultyOutput.nextLine();
+                    int foundFaculty = list.search(searchFaculty);
+                    if (foundFaculty == -1)
+                    {
+                        System.out.println("No faculty matched?");
+                    }
+                    else 
+                    {
+                        if(list.getList()[foundFaculty] instanceof Faculty) 
+                        {
+                            p.print();
+                        }
+                        else
+                        System.out.println("No faculty matched!");
+                    }
                     break;
 
                 case 5:
@@ -326,14 +343,15 @@ class Faculty extends Employee {
     
 
     @Override
-    public void print() {  // FIXME
-
+    public void print() 
+    {
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(fullName + "\t" + id);
+        System.out.println(department + " Department " + rank);
+        System.out.println("---------------------------------------------------------------------------");
     }
 }
 
-    class FacultyList{
-        private Faculty[] FacultyList;
-    }
 
 //-------------------------------------------------
 class Staff extends Employee {
