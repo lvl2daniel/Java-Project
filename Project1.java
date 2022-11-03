@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 public class Project1 {
     public static void main(String[] args) {
-        Person p;  // FIXME
+        Person p = null;  // FIXME
+        Personnel list = new Personnel();  // created Personnel object for the list
         final String validRank1 = "Professor";
         final String validRank2 = "Adjunct";
         final String validDepartment1 = "Mathematics";
@@ -57,67 +58,91 @@ public class Project1 {
                     //DEBUG PRINT STATEMENTS 
                     System.out.println(faculty.getDepartment() + faculty.getFullName() + faculty.getId() + faculty.getRank());
                     System.out.println("Case 1 works");
-                    
-                    
-                    
+
                     break;
+
                 case 2:
                     //Case for entering student info
-                    Scanner sc = new Scanner(System.in);
+                    Scanner si = new Scanner(System.in);
                     System.out.println("\n\nEnter the student info:");
-                    System.out.println("\tName of the faculty:");
+                    System.out.println("\tName of Student:");
                     String name;
-                    name = sc.nextLine();
+                    name = si.nextLine();
                     System.out.println("\tID:");
                     String id;
-                    id = sc.nextLine();
+                    id = si.nextLine();
                     System.out.println("\tGpa:");
                     double gpa;
-                    gpa = sc.nextDouble();
+                    gpa = si.nextDouble();
                     while (gpa < 0) {
                         System.out.println("''" + gpa + "'' is invalid" );
-                        gpa = sc.nextDouble();
+                        gpa = si.nextDouble();
                     }
                     System.out.println("\tCredit hours:");
-                    int creditHours = sc.nextInt();
+                    int creditHours = si.nextInt();
                     while (creditHours < 0) {
                         System.out.println("''" + creditHours + "'' is invalid");
-                        creditHours = sc.nextInt();
+                        creditHours = si.nextInt();
                     }
                     p = new Student(name, id, gpa, creditHours);
+                    System.out.println("Student added!\n\n");
                     System.out.println("Case 2 works");
+
                     break;
+
                 case 3:
                     //Case for printing tuition invoice
+                    Scanner so = new Scanner(System.in);
+                    System.out.println("Enter the student's ID:");
+                    String searchId;
+                    searchId = so.nextLine();
+                    int found = list.search(searchId);
+                    if(found == -1) {  // id is not found
+                        System.out.println("No student matched!");
+                    }
+                    else {  // id is found
+                        if(list.getList()[found] instanceof Student) {  // id is found and a student
+                            System.out.println("Here is the tuition invoice for " + list.getList()[found].fullName + ":");
+                            p.print();
+                        }
+                        else {  // id is found but not a student
+                            System.out.println("No student matched!");
+                        }
+                    }
                     System.out.println("Case 3 works");
-                    p.print();  // FIXME
                     
                     break;
+
                 case 4:
                     //Case for printing faculty information
                     System.out.println("Case 4 works");
                     
                     break;
+
                 case 5:
                     //Case for Entering the information of a staff member
                     System.out.println("Case 5 works");
+
                     break;
 
                 case 6:
                     //Case for Printing the information of a staff member.
                     System.out.println("Case 6 works");
+
                     break;
 
                 case 7:
                     //Exits user from program with a cold cold goodbye.
                     System.out.println("Goodbye.");
                     scan.close();
+
                     break;
 
                 default:
                 System.out.println("Invalid Entry- please try again.");
+
                 break;
-                }
+            }
             
         } while (input != 7);
     }
@@ -145,11 +170,13 @@ abstract class Person {
     // Variables
     protected String fullName;
     protected String id;
+    protected static int objCount;
 
-    // Constructors
+    // Constructor
     public Person(String fullName, String id) {
         this.fullName = fullName;
         this.id = id;
+        objCount++;
     }
 
     // Getters and Setters
@@ -336,6 +363,25 @@ class Personnel {
     // Constructor
     public Personnel() {
         list = new Person[100];
+    }
+
+    // Getter and Setter
+    public Person[] getList() {
+        return list;
+    }
+    public void setList(Person[] list) {
+        this.list = list;
+    }
+
+    // Method
+    public void addToList(Person p) {  // add objects to list
+        list[Person.getObjCount() - 1] = p;
+    }
+    public int search(String id) {  // search for person in list
+        for (int i = 0; i < 100; i++)
+            if (id != null && list[i].getId().equals(id))
+                return i;
+        return -1;
     }
 }
 
