@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Project1 {
     public static void main(String[] args) {
-        Person p = null;  // FIXME
+        Person p = null;  // create person objects for the personnel list FIXME
         Personnel list = new Personnel();  // created Personnel object for the list
         final String validRank1 = "Professor";
         final String validRank2 = "Adjunct";
@@ -54,9 +54,10 @@ public class Project1 {
                         System.out.println("''" + facultyDepartment + "'' is invalid");
                         facultyDepartment = facultyInput.nextLine();
                     }
-                    Faculty faculty = new Faculty(facultyName, facultyID, facultyDepartment, facultyRank);
-                    //DEBUG PRINT STATEMENTS 
-                    System.out.println(faculty.getDepartment() + faculty.getFullName() + faculty.getId() + faculty.getRank());
+                    p = new Faculty(facultyName, facultyID, facultyDepartment, facultyRank);
+                    list.addToList(p);  // add the Person to the Personnel list
+                    //DEBUG PRINT STATEMENTS (I EDITED THIS TO BE AN OBJECT OF PERSON PLEASE CHECK THIS)
+                    System.out.println("Faculty added!");
                     System.out.println("Case 1 works");
 
                     break;
@@ -85,6 +86,7 @@ public class Project1 {
                         creditHours = si.nextInt();
                     }
                     p = new Student(name, id, gpa, creditHours);
+                    list.addToList(p);  // add the Person to the Personnel list
                     System.out.println("Student added!\n\n");
                     System.out.println("Case 2 works");
 
@@ -132,7 +134,7 @@ public class Project1 {
                             p.print();
                         }
                         else
-                        System.out.println("No faculty matched!");
+                            System.out.println("No faculty matched!");
                     }
                     break;
 
@@ -161,7 +163,7 @@ public class Project1 {
                 break;
             }
             
-        } while (input != 7);
+        } while (input != 7 && Person.getObjCount() <= 100);
     }
     
 //Display Menu Function
@@ -209,6 +211,13 @@ abstract class Person {
     }
     public void setId(String id) {
         this.id = id;
+    }
+
+    public static int getObjCount() {
+        return objCount;
+    }
+    public static void setObjCount(int objCount) {
+        Person.objCount = objCount;
     }
 
     // Methods
@@ -282,7 +291,8 @@ class Student extends Person {
         System.out.println("Credit Hours: " + creditHours + " ($236.45/credit hour)");
         System.out.println("Fees: $" + FEE);
         System.out.println();
-        System.out.println("Total payment: $" + total + "\t($" + discount + " discount applied)");
+        System.out.println("Total payment: $" + Math.round(calculateTuition()*100.0)/100.0 + "\t($" +
+                Math.round(discount*100.0)/100.0 + " discount applied)");
         System.out.println("---------------------------------------------------------------------------");
     }
 
@@ -396,9 +406,10 @@ class Personnel {
         list[Person.getObjCount() - 1] = p;
     }
     public int search(String id) {  // search for person in list
-        for (int i = 0; i < 100; i++)
-            if (id != null && list[i].getId().equals(id))
-                return i;
+        if(id != null)
+            for (int i = 0; i < 100; i++)
+                if (list[i].getId().equals(id))
+                    return i;
         return -1;
     }
 }
