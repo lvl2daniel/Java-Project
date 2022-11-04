@@ -160,7 +160,8 @@ public class Project1 {
                     if(status.equalsIgnoreCase("p")) status = "Part Time";
                     else status = "Full Time";
                     System.out.println("\nStaff member added");
-                    Staff staff = new Staff(staffMemberName, staffID, department, status);
+                    p = new Staff(staffMemberName, staffID, department, status);
+                    list.addToList(p);
 
                     System.out.println("Case 5 works");
 
