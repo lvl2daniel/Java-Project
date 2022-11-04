@@ -140,16 +140,47 @@ public class Project1 {
 
                 case 5:
                     //Case for Entering the information of a staff member
+                    Scanner staffInput  = new Scanner(System.in);
+                    System.out.println("\n\nName of the staff member :");
+                    String staffMemberName;
+                    staffMemberName =staffInput.nextLine();
+                    System.out.println("\tEnter the id:");
+                    String staffID;
+                    staffID = staffInput.nextLine();
+                    System.out.println("\t Department: ");
+                    String department;
+                    department = staffInput.nextLine();
+                    System.out.println("\tStatus, enter P for Part Time, or Enter F for Full Time:");
+                    String status;
+                    status = staffInput.nextLine();
+                    while(!status.equalsIgnoreCase("p") && !status.equalsIgnoreCase("f")){
+                        System.out.println("\tInvalid input, please try again");
+                        status = staffInput.nextLine();
+                    }
+                    if(status.equalsIgnoreCase("p")) status = "Part Time";
+                    else status = "Full Time";
+                    System.out.println("\nStaff member added");
+                    Staff staff = new Staff(staffMemberName, staffID, department, status);
+
                     System.out.println("Case 5 works");
 
                     break;
 
                 case 6:
                     //Case for Printing the information of a staff member.
+                    Scanner idInput = new Scanner(System.in);
+                    System.out.println("Enter the Staff's id: ");
+                    String searchStaff;
+                    searchStaff = idInput.nextLine();
+                    int foundStaff = list.search(searchStaff);
+                    if (foundStaff == -1) System.out.print("No Staff member matched!");
+                    else if (list.getList()[foundStaff] instanceof Staff) p.print();
+                    else System.out.println("No Staff member matched");
+
                     System.out.println("Case 6 works");
 
                     break;
-
+                    
                 case 7:
                     //Exits user from program with a cold cold goodbye.
                     System.out.println("Goodbye.");
@@ -321,7 +352,7 @@ abstract class Employee extends Person {
         this.department = department;
     }
 
-    // Getters and Setters
+    
     public String getDepartment() {
         return department;
     }
@@ -339,17 +370,13 @@ class Faculty extends Employee {
         this.rank = rank;
     }
 
+    
     public String getRank() {
         return rank;
     }
     public void setRank(String rank) {
         this.rank = rank;
     }
-
-        
-
-        
-
     
 
     @Override
@@ -361,8 +388,6 @@ class Faculty extends Employee {
         System.out.println("---------------------------------------------------------------------------");
     }
 }
-
-
 //-------------------------------------------------
 class Staff extends Employee {
     private String status;
@@ -380,8 +405,11 @@ class Staff extends Employee {
     }
 
     @Override
-    public void print() {  // FIXME
-
+    public void print() { 
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println(fullName + "\t" + id);
+        System.out.println(department + " Department " + status);
+        System.out.println("---------------------------------------------------------------------------");
     }
 }
 //-------------------------------------------------
