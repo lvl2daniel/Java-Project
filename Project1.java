@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Project1 {
     public static void main(String[] args) {
-        Person p = null;  // create person objects for the personnel list FIXME
+        Person p = null;  // create person objects for the personnel list
         Personnel list = new Personnel();  // created Personnel object for the list
         final String validRank1 = "Professor";
         final String validRank2 = "Adjunct";
@@ -27,8 +27,7 @@ public class Project1 {
                 scan.next();
             }
             input = scan.nextInt();
-            switch(input)
-            {
+            switch(input) {
                 case 1:
                     //Case for entering faculty info
                     Scanner facultyInput = new Scanner(System.in);
@@ -42,15 +41,15 @@ public class Project1 {
                     System.out.println("    Rank:");
                     String facultyRank;
                     facultyRank = facultyInput.nextLine();
-                    while (!facultyRank.equalsIgnoreCase(validRank1) && !facultyRank.equalsIgnoreCase(validRank2))
-                    {
-                        System.out.println("''" + facultyRank + "'' is invalid" );
+                    while (!facultyRank.equalsIgnoreCase(validRank1) && !facultyRank.equalsIgnoreCase(validRank2)) {
+                        System.out.println("''" + facultyRank + "'' is invalid");
                         facultyRank = facultyInput.nextLine();
                     }
                     System.out.println("      Department:");
                     String facultyDepartment = facultyInput.nextLine();
-                    while (!facultyDepartment.equalsIgnoreCase(validDepartment1) && !facultyDepartment.equalsIgnoreCase(validDepartment3) && !facultyDepartment.equalsIgnoreCase(validDepartment2))
-                    {
+                    while (!facultyDepartment.equalsIgnoreCase(validDepartment1) &&
+                            !facultyDepartment.equalsIgnoreCase(validDepartment3) &&
+                            !facultyDepartment.equalsIgnoreCase(validDepartment2)) {
                         System.out.println("''" + facultyDepartment + "'' is invalid");
                         facultyDepartment = facultyInput.nextLine();
                     }
@@ -76,7 +75,7 @@ public class Project1 {
                     double gpa;
                     gpa = si.nextDouble();
                     while (gpa < 0) {
-                        System.out.println("''" + gpa + "'' is invalid" );
+                        System.out.println("''" + gpa + "'' is invalid");
                         gpa = si.nextDouble();
                     }
                     System.out.println("\tCredit hours:");
@@ -96,23 +95,23 @@ public class Project1 {
                     //Case for printing tuition invoice
                     Scanner so = new Scanner(System.in);
                     System.out.println("Enter the student's ID:");
-                    String searchId;
-                    searchId = so.nextLine();
-                    int found = list.search(searchId);
-                    if(found == -1) {  // id is not found
+                    String search;
+                    search = so.nextLine();
+                    if(p == null){
+                        System.out.println("No student matched!");
+                        break;
+                    }
+                    int found = list.search(search);
+                    if (found == -1) {  // id is not found
+                        System.out.println("No student matched!");
+                    } else if(list.getList()[found] instanceof Student) {  // id is found and a student
+                        System.out.println("Here is the tuition invoice for " + list.getList()[found].fullName + ":");
+                        p.print();
+                    } else {  // id is found but not a student
                         System.out.println("No student matched!");
                     }
-                    else {  // id is found
-                        if(list.getList()[found] instanceof Student) {  // id is found and a student
-                            System.out.println("Here is the tuition invoice for " + list.getList()[found].fullName + ":");
-                            p.print();
-                        }
-                        else {  // id is found but not a student
-                            System.out.println("No student matched!");
-                        }
-                    }
                     System.out.println("Case 3 works");
-                    
+
                     break;
 
                 case 4:
@@ -122,28 +121,25 @@ public class Project1 {
                     System.out.println("Enter the faculty's ID:");
                     String searchFaculty;
                     searchFaculty = facultyOutput.nextLine();
+                    if (p == null) {
+                        System.out.println("No Staff member matched");
+                        break;
+                    }
                     int foundFaculty = list.search(searchFaculty);
-                    if (foundFaculty == -1)
-                    {
+                    if (foundFaculty == -1) {
                         System.out.println("No faculty matched?");
-                    }
-                    else 
-                    {
-                        if(list.getList()[foundFaculty] instanceof Faculty) 
-                        {
+                    } else if (list.getList()[foundFaculty] instanceof Faculty) {
                             p.print();
-                        }
-                        else
-                            System.out.println("No faculty matched!");
-                    }
+                    } else
+                        System.out.println("No faculty matched!");
                     break;
 
                 case 5:
                     //Case for Entering the information of a staff member
-                    Scanner staffInput  = new Scanner(System.in);
+                    Scanner staffInput = new Scanner(System.in);
                     System.out.println("\n\nName of the staff member :");
                     String staffMemberName;
-                    staffMemberName =staffInput.nextLine();
+                    staffMemberName = staffInput.nextLine();
                     System.out.println("\tEnter the id:");
                     String staffID;
                     staffID = staffInput.nextLine();
@@ -153,11 +149,11 @@ public class Project1 {
                     System.out.println("\tStatus, enter P for Part Time, or Enter F for Full Time:");
                     String status;
                     status = staffInput.nextLine();
-                    while(!status.equalsIgnoreCase("p") && !status.equalsIgnoreCase("f")){
+                    while (!status.equalsIgnoreCase("p") && !status.equalsIgnoreCase("f")) {
                         System.out.println("\tInvalid input, please try again");
                         status = staffInput.nextLine();
                     }
-                    if(status.equalsIgnoreCase("p")) status = "Part Time";
+                    if (status.equalsIgnoreCase("p")) status = "Part Time";
                     else status = "Full Time";
                     System.out.println("\nStaff member added");
                     p = new Staff(staffMemberName, staffID, department, status);
@@ -173,6 +169,10 @@ public class Project1 {
                     System.out.println("Enter the Staff's id: ");
                     String searchStaff;
                     searchStaff = idInput.nextLine();
+                    if (p == null) {
+                        System.out.println("No Staff member matched");
+                        break;
+                    }
                     int foundStaff = list.search(searchStaff);
                     if (foundStaff == -1) System.out.print("No Staff member matched!");
                     else if (list.getList()[foundStaff] instanceof Staff) p.print();
