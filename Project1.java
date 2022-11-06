@@ -193,7 +193,6 @@ public class Project1 {
                     int foundStaff = list.search(searchStaff);
                     if (foundStaff == -1) {
                         System.out.println("\nNo Staff member matched");
-                        break;
                     } else if (list.getList()[foundStaff] instanceof Staff) list.getList()[foundStaff].print();
                     else System.out.println("\nNo Staff member matched");
                 }
