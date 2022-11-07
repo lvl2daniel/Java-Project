@@ -23,7 +23,7 @@ public class Project1 {
             //THIS SWITCH CASE IS WORKING. FINALLY!
             displayMenu();
             while (!scan.hasNextInt()){
-                System.out.println("Invalid Entry- please try again");
+                System.out.println("\nInvalid Entry- please try again");
                 displayMenu();
                 scan.next();
             }
@@ -56,7 +56,7 @@ public class Project1 {
                         System.out.print("\t  Rank: ");
                         facultyRank = facultyInput.nextLine();
                     }
-                    System.out.print("\n\t  Department:");
+                    System.out.print("\n\t  Department: ");
                     String facultyDepartment = facultyInput.nextLine();
                     while (!facultyDepartment.equalsIgnoreCase(validDepartment1) &&
                             !facultyDepartment.equalsIgnoreCase(validDepartment3) &&
@@ -132,7 +132,7 @@ public class Project1 {
                     String searchFaculty;
                     searchFaculty = facultyOutput.nextLine();
                     if (p == null) {
-                        System.out.println("\nNo Faculty member matched");
+                        System.out.println("\nNo Faculty member matched!");
                         break;
                     }
                     int foundFaculty = list.search(searchFaculty);
@@ -192,9 +192,9 @@ public class Project1 {
                     searchStaff = idInput.nextLine();
                     int foundStaff = list.search(searchStaff);
                     if (foundStaff == -1) {
-                        System.out.println("\nNo Staff member matched");
+                        System.out.println("\nNo Staff member matched!");
                     } else if (list.getList()[foundStaff] instanceof Staff) list.getList()[foundStaff].print();
-                    else System.out.println("\nNo Staff member matched");
+                    else System.out.println("\nNo Staff member matched!");
                 }
                 case 7 -> {
                     //Exits user from program with a cold cold goodbye.
@@ -393,7 +393,7 @@ class Faculty extends Employee {
     @Override
     public void print() 
     {
-        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("\n---------------------------------------------------------------------------");
         System.out.println(fullName + "\t" + id);
         System.out.println(department.substring(0,1).toUpperCase() + department.substring(1).toLowerCase()
                 + " Department, " + rank.substring(0,1).toUpperCase() + rank.substring(1).toLowerCase());
@@ -418,7 +418,7 @@ class Staff extends Employee {
 
     @Override
     public void print() { 
-        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("\n---------------------------------------------------------------------------");
         System.out.println(fullName + "\t" + id);
         System.out.println(department.substring(0,1).toUpperCase() + department.substring(1).toLowerCase()
                 + " Department, " + status);
