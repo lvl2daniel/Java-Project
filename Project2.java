@@ -1,7 +1,10 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /*
-- Project 1
+- Project 2
 - Daniel Gonzalez, Gianna Colon, and David Valdes
 - We used protected instead of private within the abstract classes, so that they can still be pulled from inheritors
 */
@@ -67,144 +70,183 @@ public class Project2 {
                     p = new Faculty(facultyName, facultyID, facultyDepartment, facultyRank);
                     list.addToList(p);  // add the Person to the Personnel list
 
-                    //DEBUG PRINT STATEMENTS (I EDITED THIS TO BE AN OBJECT OF PERSON PLEASE CHECK THIS)
-                    System.out.println("\nFaculty added!\n");
-                }
-                case 2 -> {
-                    //Case for entering student info
-                    Scanner si = new Scanner(System.in);
-                    System.out.println("\n\nEnter the Student info: ");
-                    System.out.print("\t  Name of Student: ");
-                    String name;
-                    name = si.nextLine();
-                    System.out.print("\t  ID: ");
-                    String id;
-                    id = si.nextLine();
-                    int index = list.search(id);
-                    while (index != -1) {
-                        if (list.getList()[index].id.equals(id)) {
-                            System.out.print("\t  ID already created, please try again.\n");
-                            System.out.print("\t  ID: ");
-                            id = si.nextLine();
-                            index = list.search(id);
-                        }
+                        //DEBUG PRINT STATEMENTS (I EDITED THIS TO BE AN OBJECT OF PERSON PLEASE CHECK THIS)
+                        System.out.println("\nFaculty added!\n");
                     }
-                    System.out.print("\t  Gpa: ");
-                    double gpa;
-                    gpa = si.nextDouble();
-                    while (gpa < 0) {
-                        System.out.println("\"" + gpa + "\" is invalid");
+                    case 2 -> {
+                        //Case for entering student info
+                        Scanner si = new Scanner(System.in);
+                        System.out.println("\n\nEnter the Student info: ");
+                        System.out.print("\t  Name of Student: ");
+                        String name;
+                        name = si.nextLine();
+                        System.out.print("\t  ID: ");
+                        String id;
+                        id = si.nextLine();
+                        int index = list.search(id);
+                        while (index != -1) {
+                            if (list.getList()[index].id.equals(id)) {
+                                System.out.print("\t  ID already created, please try again.\n");
+                                System.out.print("\t  ID: ");
+                                id = si.nextLine();
+                                index = list.search(id);
+                            }
+                        }
+                        System.out.print("\t  Gpa: ");
+                        double gpa;
                         gpa = si.nextDouble();
+                        while (gpa < 0) {
+                            System.out.println("\"" + gpa + "\" is invalid. Please try again.");
+                            System.out.print("\t  Gpa: ");
+                            gpa = si.nextDouble();
+                        }
+                        System.out.print("\t  Credit hours: ");
+                        int creditHours = si.nextInt();
+                        while (creditHours < 0) {
+                            System.out.println("\"" + creditHours + "\" is invalid. Please try again.");
+                            System.out.print("\t  Credit hours: ");
+                            creditHours = si.nextInt();
+                        }
+                        p = new Student(name, id, gpa, creditHours);
+                        list.addToList(p);  // add the Person to the Personnel list
+                        System.out.println("\nStudent added!\n");
                     }
-                    System.out.print("\t  Credit hours: ");
-                    int creditHours = si.nextInt();
-                    while (creditHours < 0) {
-                        System.out.println("\"" + creditHours + "\" is invalid");
-                        creditHours = si.nextInt();
-                    }
-                    p = new Student(name, id, gpa, creditHours);
-                    list.addToList(p);  // add the Person to the Personnel list
-                    System.out.println("\nStudent added!\n");
-                }
-                case 3 -> {
-                    //Case for printing tuition invoice
-                    Scanner so = new Scanner(System.in);
-                    System.out.print("\n\nEnter the Student's ID: ");
-                    String search;
-                    search = so.nextLine();
-                    if (p == null) {
-                        System.out.println("\nNo Student matched!");
-                        break;
-                    }
-                    int found = list.search(search);
-                    if (found == -1) {  // id is not found
-                        System.out.println("\nNo Student matched!");
-                    } else if (list.getList()[found] instanceof Student) {  // id is found and a student
-                        list.getList()[found].print();
-                    } else {  // id is found but not a student
-                        System.out.println("\nNo Student matched!");
-                    }
-                }
-                case 4 -> {
-                    //Case for printing faculty information
-                    Scanner facultyOutput = new Scanner(System.in);
-                    System.out.print("\n\nEnter the Faculty member's ID: ");
-                    String searchFaculty;
-                    searchFaculty = facultyOutput.nextLine();
-                    if (p == null) {
-                        System.out.println("\nNo Faculty member matched!");
-                        break;
-                    }
-                    int foundFaculty = list.search(searchFaculty);
-                    if (foundFaculty == -1) {
-                        System.out.println("\nNo Faculty member matched!");
-                    } else if (list.getList()[foundFaculty] instanceof Faculty) {
-                        list.getList()[foundFaculty].print();
-                    } else
-                        System.out.println("\nNo Faculty member matched!");
-                }
-                case 5 -> {
-                    //Case for Entering the information of a staff member
-                    Scanner staffInput = new Scanner(System.in);
-                    System.out.print("\n\nName of the Staff member: ");
-                    String staffMemberName;
-                    staffMemberName = staffInput.nextLine();
-                    System.out.print("\t  Enter the Staff member's id: ");
-                    String staffID;
-                    staffID = staffInput.nextLine();
-                    int staffIndex = list.search(staffID);
-                    while (staffIndex != -1) {
-                        if (list.getList()[staffIndex].id.equals(staffID)) {
-                            System.out.print("\t  ID already created, please try again.\n");
-                            System.out.print("\t  ID: ");
-                            staffID = staffInput.nextLine();
-                            staffIndex = list.search(staffID);
+                    case 3 -> {
+                        //Case for printing tuition invoice
+                        Scanner so = new Scanner(System.in);
+                        System.out.print("\n\nEnter the Student's ID: ");
+                        String search;
+                        search = so.nextLine();
+                        if (p == null) {
+                            System.out.println("\nNo Student matched!");
+                            break;
+                        }
+                        int found = list.search(search);
+                        if (found == -1) {  // id is not found
+                            System.out.println("\nNo Student matched!");
+                        } else if (list.getList()[found] instanceof Student) {  // id is found and a student
+                            list.getList()[found].print();
+                        } else {  // id is found but not a student
+                            System.out.println("\nNo Student matched!");
                         }
                     }
-                    System.out.print("\t  Department: ");
-                    String department;
-                    department = staffInput.nextLine();
-                    while (!department.equalsIgnoreCase(validDepartment1) &&
-                            !department.equalsIgnoreCase(validDepartment3) &&
-                            !department.equalsIgnoreCase(validDepartment2)) {
-                        System.out.println("\t  \"" + department + "\" is invalid");
+                    case 4 -> {
+                        //Case for printing faculty information
+                        Scanner facultyOutput = new Scanner(System.in);
+                        System.out.print("\n\nEnter the Faculty member's ID: ");
+                        String searchFaculty;
+                        searchFaculty = facultyOutput.nextLine();
+                        if (p == null) {
+                            System.out.println("\nNo Faculty member matched!");
+                            break;
+                        }
+                        int foundFaculty = list.search(searchFaculty);
+                        if (foundFaculty == -1) {
+                            System.out.println("\nNo Faculty member matched!");
+                        } else if (list.getList()[foundFaculty] instanceof Faculty) {
+                            list.getList()[foundFaculty].print();
+                        } else
+                            System.out.println("\nNo Faculty member matched!");
+                    }
+                    case 5 -> {
+                        //Case for entering the information of a staff member
+                        Scanner staffInput = new Scanner(System.in);
+                        System.out.print("\n\nName of the Staff member: ");
+                        String staffMemberName;
+                        staffMemberName = staffInput.nextLine();
+                        System.out.print("\t  Enter the Staff member's id: ");
+                        String staffID;
+                        staffID = staffInput.nextLine();
+                        int staffIndex = list.search(staffID);
+                        while (staffIndex != -1) {
+                            if (list.getList()[staffIndex].id.equals(staffID)) {
+                                System.out.print("\t  ID already created, please try again.\n");
+                                System.out.print("\t  ID: ");
+                                staffID = staffInput.nextLine();
+                                staffIndex = list.search(staffID);
+                            }
+                        }
                         System.out.print("\t  Department: ");
+                        String department;
                         department = staffInput.nextLine();
-                    }
-                    System.out.print("\t  Status, enter P for Part Time, or Enter F for Full Time: ");
-                    String status;
-                    status = staffInput.nextLine();
-                    while (!status.equalsIgnoreCase("p") && !status.equalsIgnoreCase("f")) {
-                        System.out.println("\t  Invalid input, please try again");
+                        while (!department.equalsIgnoreCase(validDepartment1) &&
+                                !department.equalsIgnoreCase(validDepartment3) &&
+                                !department.equalsIgnoreCase(validDepartment2)) {
+                            System.out.println("\t  \"" + department + "\" is invalid");
+                            System.out.print("\t  Department: ");
+                            department = staffInput.nextLine();
+                        }
+                        System.out.print("\t  Status, enter P for Part Time, or Enter F for Full Time: ");
+                        String status;
                         status = staffInput.nextLine();
+                        while (!status.equalsIgnoreCase("p") && !status.equalsIgnoreCase("f")) {
+                            System.out.println("\t  Invalid input. Please try again.");
+                            System.out.print("\t  Status, enter P for Part Time, or Enter F for Full Time: ");
+                            status = staffInput.nextLine();
+                        }
+                        if (status.equalsIgnoreCase("p")) status = "Part Time";
+                        else status = "Full Time";
+                        System.out.println("\nStaff member added!");
+                        p = new Staff(staffMemberName, staffID, department, status);
+                        list.addToList(p);
                     }
-                    if (status.equalsIgnoreCase("p")) status = "Part Time";
-                    else status = "Full Time";
-                    System.out.println("\nStaff member added!");
-                    p = new Staff(staffMemberName, staffID, department, status);
-                    list.addToList(p);
+                    case 6 -> {
+                        //Case for Printing the information of a staff member.
+                        Scanner idInput = new Scanner(System.in);
+                        System.out.print("\n\nEnter the Staff's id: ");
+                        String searchStaff;
+                        searchStaff = idInput.nextLine();
+                        int foundStaff = list.search(searchStaff);
+                        if (foundStaff == -1) {
+                            System.out.println("\nNo Staff member matched!");
+                        } else if (list.getList()[foundStaff] instanceof Staff) list.getList()[foundStaff].print();
+                        else System.out.println("\nNo Staff member matched!");
+                    }
+                    case 7 -> {
+                        Scanner finalInput = new Scanner(System.in);
+                        String report;
+                        int sort;
+                        // Creates txt file if yes and sorts by user choice
+                        System.out.print("\n\nWould you like to create the report? (Y/N): ");
+                        report = finalInput.nextLine();
+                        while(!(report.equalsIgnoreCase("y") || report.equalsIgnoreCase("n"))) {
+                            System.out.println("Invalid input. Please try again.");
+                            System.out.print("\nWould you like to create the report? (Y/N): ");
+                            report = finalInput.nextLine();
+                        }
+                        if(report.equalsIgnoreCase("y")) {
+                            ArrayList<Student> students = new ArrayList<Student>();
+                            for(int i = 0; i < 100; i++) {
+                                if(list.getList()[i] instanceof Student) {
+                                    students.add((Student)list.getList()[i]);
+                                }
+                            }
+                            System.out.print("\n\nWould you like to sort your students by (1) gpa or (2) credit hours: ");
+                            sort = finalInput.nextInt();
+                            while (!(sort == 1 || sort == 2)) {
+                                System.out.println("Invalid input. Please try again.");
+                                System.out.print("\nWould you like to sort your students by (1) gpa or (2) credit hours: ");
+                                sort = finalInput.nextInt();
+                            }
+                            if(sort == 1)
+                                Collections.sort(students, new GpaComparator());
+                            else
+                                Collections.sort(students, new CreditHoursComparator());
+
+                            // THIS IS A TEST TO SEE IF THE ARRAYLIST HAS THE STUDENTS FIXME
+                            for(Student s : students) {
+                                System.out.println(s.getFullName());
+                            }
+                        }
+                        //Exits user from program with a cold cold goodbye.
+                        System.out.println("\n\nGoodbye!");
+                        finalInput.close();
+                        scan.close();
+                    }
+                    default -> System.out.println("\nInvalid Entry- please try again.\n");
                 }
-                case 6 -> {
-                    //Case for Printing the information of a staff member.
-                    Scanner idInput = new Scanner(System.in);
-                    System.out.print("\n\nEnter the Staff's id: ");
-                    String searchStaff;
-                    searchStaff = idInput.nextLine();
-                    int foundStaff = list.search(searchStaff);
-                    if (foundStaff == -1) {
-                        System.out.println("\nNo Staff member matched!");
-                    } else if (list.getList()[foundStaff] instanceof Staff) list.getList()[foundStaff].print();
-                    else System.out.println("\nNo Staff member matched!");
-                }
-                case 7 -> {
-                    //Exits user from program with a cold cold goodbye.
-                    System.out.println("\n\nGoodbye!");
-                    scan.close();
-                }
-                default -> System.out.println("\nInvalid Entry- please try again.\n");
-            }
-            
-        } while (input != 7 && Person.getObjCount() <= 100);
+
+            } while (input != 7 && Person.getObjCount() <= 100);
     }
     
 //Display Menu Function
@@ -352,6 +394,28 @@ class Student extends Person {
             setDiscount(discount);
         }
         return total;
+    }
+}
+//-------------------------------------------------
+class GpaComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student o1, Student o2) {
+        if(o1.getGpa() == o2.getGpa())
+            return 0;
+        else if(o1.getGpa() < o2.getGpa())  // This is to create a descending order
+            return 1;
+        return -1;
+    }
+}
+//-------------------------------------------------
+class CreditHoursComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student o1, Student o2) {
+        if(o1.getCreditHours() == o2.getCreditHours())
+            return 0;
+        else if(o1.getCreditHours() < o2.getCreditHours())  // This is to create a descending order
+            return 1;
+        return -1;
     }
 }
 //-------------------------------------------------
