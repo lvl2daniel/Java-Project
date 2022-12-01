@@ -6,7 +6,7 @@ import java.util.Scanner;
 - We used protected instead of private within the abstract classes, so that they can still be pulled from inheritors
 */
 
-public class Project1 {
+public class Project2 {
     public static void main(String[] args) {
         Person p = null;  // create person objects for the personnel list
         Personnel list = new Personnel();  // created Personnel object for the list
