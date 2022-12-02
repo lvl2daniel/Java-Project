@@ -1,4 +1,5 @@
 import java.util.*; // Use * to access all java.util
+import java.io.*;
 
 /*
 - Project 2
@@ -7,7 +8,7 @@ import java.util.*; // Use * to access all java.util
 */
 
 public class Project2 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         Person p = null;  // create person objects for the personnel list
         Personnel list = new Personnel();  // created Personnel object for the list
         final String validRank1 = "Professor";
@@ -212,6 +213,21 @@ public class Project2 {
                             report = finalInput.nextLine();
                         }
                         if(report.equalsIgnoreCase("y")) {
+                            PrintWriter out = null;
+                            ArrayList<Faculty> faculties = new ArrayList<Faculty>();
+                            for(int i = 0; i < 100; i++) {
+                                if(list.getList()[i] instanceof Faculty){
+                                    faculties.add((Faculty)list.getList()[i]);
+                                }
+                            }
+
+                            ArrayList<Staff> staffs = new ArrayList<Staff>();
+                            for(int i = 0; i < 100; i++) {
+                                if(list.getList()[i] instanceof Staff){
+                                    staffs.add((Staff)list.getList()[i]);
+                                }
+                            }
+
                             ArrayList<Student> students = new ArrayList<Student>();
                             for(int i = 0; i < 100; i++) {
                                 if(list.getList()[i] instanceof Student) {
@@ -230,11 +246,72 @@ public class Project2 {
                             else
                                 Collections.sort(students, new CreditHoursComparator());
 
-                            // THIS IS A TEST TO SEE IF THE ARRAYLIST HAS THE STUDENTS FIXME
+                            //Write the file
+                            try {
+                                out = new PrintWriter("report.txt");
+
+                                
+                            
+                            int stfCount = 1;
+                            int facCount = 1;
+                            int stuCount = 1;
+
+                            out.println("Faculty Members");
+                            out.println("_____________________");
+                            out.println();
+                            out.println();
+                            for(Faculty f : faculties)
+                            {
+                                out.println(facCount + ". " + f.getFullName());
+                                out.println("ID: " + f.getId());
+                                out.println(f.getRank() + "," + f.getDepartment());
+                                facCount++;
+                                out.println();
+                                out.println();
+                            }
+
+                            out.println();
+                            out.println();
+                            out.println("Staff Members");
+                            out.println("_____________________");
+                            out.println();
+                            out.println();
+
+                            for(Staff s : staffs)
+                            {
+                                out.println(stfCount + ". " + s.getFullName());
+                                out.println("ID: " + s.getId());
+                                out.println(s.getDepartment() + " , " + s.getStatus());
+                                stfCount++;
+                                out.println();
+                            out.println();
+                            }
+                            out.println();
+                            out.println();
+                            if(sort == 1)
+                            out.println("Students (sorted by gpa)");
+                            else
+                            out.println("Students: (sorted by credit hours)");
+                            out.println("________________________________");
+                            out.println();
+                            out.println();
                             for(Student s : students) {
-                                System.out.println(s.getFullName());
+                                out.println(stuCount + ". " + s.getFullName());
+                                out.println("ID: " + s.getId());
+                                out.println("Gpa: " +  s.getGpa());
+                                out.println("Credit hours: " + s.getCreditHours());
+                                stuCount++;
+                                out.println();
+                            out.println();
                             }
                         }
+                            finally {
+                                if (out != null){
+                                out.close();
+                                }
+                            }
+                        }
+                        
                         //Exits user from program with a cold cold goodbye.
                         System.out.println("\n\nGoodbye!");
                         finalInput.close();
