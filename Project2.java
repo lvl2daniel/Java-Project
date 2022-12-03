@@ -1,14 +1,16 @@
-import java.util.*; // Use * to access all java.util
 import java.io.*;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /*
 - Project 2
 - Daniel Gonzalez, Gianna Colon, and David Valdes
-- We used protected instead of private within the abstract classes, so that they can still be pulled from inheritors
+- We used protected instead of private within the abstract classes, so that they can still be pulled from inheritors.
+- Gpa must be in #.## format.
 */
 
 public class Project2 {
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) {
         Person p = null;  // create person objects for the personnel list
         Personnel list = new Personnel();  // created Personnel object for the list
         final String validRank1 = "Professor";
@@ -16,11 +18,11 @@ public class Project2 {
         final String validDepartment1 = "Mathematics";
         final String validDepartment2 = "Engineering";
         final String validDepartment3 = "Sciences";
-        int input = 0;
+        int input;
         Scanner scan = new Scanner(System.in);
         System.out.println("\t\t\t\t\tWelcome to my Personnel Management System");
         System.out.println("\nChoose one of the options:");
-        do{
+        do {
             //THIS SWITCH CASE IS WORKING. FINALLY!
             displayMenu();
             while (!scan.hasNextInt()){
@@ -38,18 +40,8 @@ public class Project2 {
                     String facultyName;
                     facultyName = facultyInput.nextLine();
                     System.out.print("\t  ID: ");
-                    String facultyID;
-                    facultyID = facultyInput.nextLine();
-                    int facultyIndex = list.search(facultyID);
-                    while (facultyIndex != -1) {
-                        if (list.getList()[facultyIndex].id.equals(facultyID)) {
-                            System.out.print("\t  ID already created, please try again.\n");
-                            System.out.print("\t  ID: ");
-                            facultyID = facultyInput.nextLine();
-                            facultyIndex = list.search(facultyID);
-                        }
-                    }
-                    System.out.print("\n\t  Rank: ");
+                    String facultyID = idInputCheck(list);  // Make sure ID format matches
+                    System.out.print("\t  Rank: ");
                     String facultyRank;
                     facultyRank = facultyInput.nextLine();
                     while (!facultyRank.equalsIgnoreCase(validRank1) && !facultyRank.equalsIgnoreCase(validRank2)) {
@@ -57,7 +49,7 @@ public class Project2 {
                         System.out.print("\t  Rank: ");
                         facultyRank = facultyInput.nextLine();
                     }
-                    System.out.print("\n\t  Department: ");
+                    System.out.print("\t  Department: ");
                     String facultyDepartment = facultyInput.nextLine();
                     while (!facultyDepartment.equalsIgnoreCase(validDepartment1) &&
                             !facultyDepartment.equalsIgnoreCase(validDepartment3) &&
@@ -67,9 +59,7 @@ public class Project2 {
                     }
                     p = new Faculty(facultyName, facultyID, facultyDepartment, facultyRank);
                     list.addToList(p);  // add the Person to the Personnel list
-
-                        //DEBUG PRINT STATEMENTS (I EDITED THIS TO BE AN OBJECT OF PERSON PLEASE CHECK THIS)
-                        System.out.println("\nFaculty added!\n");
+                    System.out.println("\nFaculty added!\n");
                     }
                     case 2 -> {
                         //Case for entering student info
@@ -79,33 +69,34 @@ public class Project2 {
                         String name;
                         name = si.nextLine();
                         System.out.print("\t  ID: ");
-                        String id;
-                        id = si.nextLine();
-                        int index = list.search(id);
-                        while (index != -1) {
-                            if (list.getList()[index].id.equals(id)) {
-                                System.out.print("\t  ID already created, please try again.\n");
-                                System.out.print("\t  ID: ");
-                                id = si.nextLine();
-                                index = list.search(id);
+                        String id = idInputCheck(list);  // Make sure ID format matches
+                        System.out.print("\t  Gpa: ");
+                        double formattedGpa = -1;
+                        String gpa;
+                        while (formattedGpa < 0 || formattedGpa > 4) {
+                            gpa = si.nextLine();
+                            if (gpa.matches("^\\d+\\.\\d\\d$")) {
+                                formattedGpa = Double.parseDouble(gpa);
+                                break;
+                            }
+                            else {
+                                System.out.println("\n\t  Gpa must be in #.## format. Please try again.");
+                                System.out.print("\n\t  Gpa: ");
                             }
                         }
-                        System.out.print("\t  Gpa: ");
-                        double gpa;
-                        gpa = si.nextDouble();
-                        while (gpa < 0) {
-                            System.out.println("\"" + gpa + "\" is invalid. Please try again.");
-                            System.out.print("\t  Gpa: ");
-                            gpa = si.nextDouble();
-                        }
-                        System.out.print("\t  Credit hours: ");
-                        int creditHours = si.nextInt();
-                        while (creditHours < 0) {
-                            System.out.println("\"" + creditHours + "\" is invalid. Please try again.");
+                        int creditHours;
+                        do {
                             System.out.print("\t  Credit hours: ");
-                            creditHours = si.nextInt();
-                        }
-                        p = new Student(name, id, gpa, creditHours);
+                            try {
+                                creditHours = si.nextInt();
+                                if(creditHours > 0)
+                                    break;
+                            } catch (InputMismatchException e) {
+                                si.next();
+                            }
+                            System.out.println("\n\t  Credit hours must be a positive integer. Please try again.\n");
+                        } while(true);
+                        p = new Student(name, id, formattedGpa, creditHours);
                         list.addToList(p);  // add the Person to the Personnel list
                         System.out.println("\nStudent added!\n");
                     }
@@ -113,8 +104,7 @@ public class Project2 {
                         //Case for printing tuition invoice
                         Scanner so = new Scanner(System.in);
                         System.out.print("\n\nEnter the Student's ID: ");
-                        String search;
-                        search = so.nextLine();
+                        String search = idSearchCheck();  // Make sure search ID format matches
                         if (p == null) {
                             System.out.println("\nNo Student matched!");
                             break;
@@ -132,8 +122,7 @@ public class Project2 {
                         //Case for printing faculty information
                         Scanner facultyOutput = new Scanner(System.in);
                         System.out.print("\n\nEnter the Faculty member's ID: ");
-                        String searchFaculty;
-                        searchFaculty = facultyOutput.nextLine();
+                        String searchFaculty = idSearchCheck();  // Make sure search ID format matches
                         if (p == null) {
                             System.out.println("\nNo Faculty member matched!");
                             break;
@@ -152,18 +141,8 @@ public class Project2 {
                         System.out.print("\n\nName of the Staff member: ");
                         String staffMemberName;
                         staffMemberName = staffInput.nextLine();
-                        System.out.print("\t  Enter the Staff member's id: ");
-                        String staffID;
-                        staffID = staffInput.nextLine();
-                        int staffIndex = list.search(staffID);
-                        while (staffIndex != -1) {
-                            if (list.getList()[staffIndex].id.equals(staffID)) {
-                                System.out.print("\t  ID already created, please try again.\n");
-                                System.out.print("\t  ID: ");
-                                staffID = staffInput.nextLine();
-                                staffIndex = list.search(staffID);
-                            }
-                        }
+                        System.out.print("\t  Enter the Staff member's ID: ");
+                        String staffID = idInputCheck(list);  // Make sure ID format matches
                         System.out.print("\t  Department: ");
                         String department;
                         department = staffInput.nextLine();
@@ -192,8 +171,7 @@ public class Project2 {
                         //Case for Printing the information of a staff member.
                         Scanner idInput = new Scanner(System.in);
                         System.out.print("\n\nEnter the Staff's id: ");
-                        String searchStaff;
-                        searchStaff = idInput.nextLine();
+                        String searchStaff = idSearchCheck();  // Make sure search ID format matches
                         int foundStaff = list.search(searchStaff);
                         if (foundStaff == -1) {
                             System.out.println("\nNo Staff member matched!");
@@ -220,14 +198,12 @@ public class Project2 {
                                     faculties.add((Faculty)list.getList()[i]);
                                 }
                             }
-
                             ArrayList<Staff> staffs = new ArrayList<Staff>();
                             for(int i = 0; i < 100; i++) {
                                 if(list.getList()[i] instanceof Staff){
                                     staffs.add((Staff)list.getList()[i]);
                                 }
                             }
-
                             ArrayList<Student> students = new ArrayList<Student>();
                             for(int i = 0; i < 100; i++) {
                                 if(list.getList()[i] instanceof Student) {
@@ -245,85 +221,77 @@ public class Project2 {
                                 Collections.sort(students, new GpaComparator());
                             else
                                 Collections.sort(students, new CreditHoursComparator());
-
                             //Write the file
                             try {
                                 out = new PrintWriter("report.txt");
-
-                                
-                            
-                            int stfCount = 1;
-                            int facCount = 1;
-                            int stuCount = 1;
-
-                            out.println("Faculty Members");
-                            out.println("_____________________");
-                            out.println();
-                            out.println();
-                            for(Faculty f : faculties)
-                            {
-                                out.println(facCount + ". " + f.getFullName());
-                                out.println("ID: " + f.getId());
-                                out.println(f.getRank() + "," + f.getDepartment());
-                                facCount++;
+                                int stfCount = 1;
+                                int facCount = 1;
+                                int stuCount = 1;
+                                out.println("Faculty Members");
+                                out.println("_____________________");
                                 out.println();
                                 out.println();
-                            }
-
-                            out.println();
-                            out.println();
-                            out.println("Staff Members");
-                            out.println("_____________________");
-                            out.println();
-                            out.println();
-
-                            for(Staff s : staffs)
-                            {
-                                out.println(stfCount + ". " + s.getFullName());
-                                out.println("ID: " + s.getId());
-                                out.println(s.getDepartment() + " , " + s.getStatus());
-                                stfCount++;
-                                out.println();
-                            out.println();
-                            }
-                            out.println();
-                            out.println();
-                            if(sort == 1)
-                            out.println("Students (sorted by gpa)");
-                            else
-                            out.println("Students: (sorted by credit hours)");
-                            out.println("________________________________");
-                            out.println();
-                            out.println();
-                            for(Student s : students) {
-                                out.println(stuCount + ". " + s.getFullName());
-                                out.println("ID: " + s.getId());
-                                out.println("Gpa: " +  s.getGpa());
-                                out.println("Credit hours: " + s.getCreditHours());
-                                stuCount++;
-                                out.println();
-                            out.println();
-                            }
-                        }
-                            finally {
-                                if (out != null){
-                                out.close();
+                                for (Faculty f : faculties) {
+                                    out.println(facCount + ". " + f.getFullName());
+                                    out.println("ID: " + f.getId());
+                                    out.println(f.getRank() + "," + f.getDepartment());
+                                    facCount++;
+                                    out.println();
+                                    out.println();
                                 }
+                                out.println();
+                                out.println();
+                                out.println("Staff Members");
+                                out.println("_____________________");
+                                out.println();
+                                out.println();
+                                for (Staff s : staffs) {
+                                    out.println(stfCount + ". " + s.getFullName());
+                                    out.println("ID: " + s.getId());
+                                    out.println(s.getDepartment() + " , " + s.getStatus());
+                                    stfCount++;
+                                    out.println();
+                                    out.println();
+                                }
+                                out.println();
+                                out.println();
+                                if (sort == 1)
+                                    out.println("Students (sorted by gpa)");
+                                else
+                                    out.println("Students: (sorted by credit hours)");
+                                out.println("________________________________");
+                                out.println();
+                                out.println();
+                                for (Student s : students) {
+                                    out.println(stuCount + ". " + s.getFullName());
+                                    out.println("ID: " + s.getId());
+                                    out.println("Gpa: " + s.getGpa());
+                                    out.println("Credit hours: " + s.getCreditHours());
+                                    stuCount++;
+                                    out.println();
+                                    out.println();
+                                }
+                            } catch(IOException e)
+                                {
+                                    System.out.println("ERROR: File operations failed.");
+                                    e.printStackTrace();
+                                } finally
+                            {
+                                if (out != null)
+                                    out.close();
                             }
                         }
-                        
-                        //Exits user from program with a cold cold goodbye.
+                        //Exits user from program with a cold goodbye.
                         System.out.println("\n\nGoodbye!");
                         finalInput.close();
                         scan.close();
                     }
                     default -> System.out.println("\nInvalid Entry- please try again.\n");
                 }
-
             } while (input != 7 && Person.getObjCount() <= 100);
     }
-    
-//Display Menu Function
+
+    // Display Menu Method
     private static void displayMenu() {
     System.out.println("\n1-  Enter the information a faculty");
     System.out.println("2-  Enter the information of a student");
@@ -336,7 +304,7 @@ public class Project2 {
     }
 }
 
-//-------------------------------------------------
+//--------------------------------------------------
 abstract class Person {
     // Variables
     protected String fullName;
@@ -381,8 +349,8 @@ abstract class Person {
     // Methods
     public abstract void print();  // Print method
 }
-//-------------------------------------------------
-class Student extends Person {
+//--------------------------------------------------
+ class Student extends Person {
     // Variables
     private int creditHours;
     private double gpa;
@@ -470,30 +438,7 @@ class Student extends Person {
         return total;
     }
 }
-//-------------------------------------------------
-class GpaComparator implements Comparator<Student> {
-    @Override
-    public int compare(Student o1, Student o2) {
-        if(o1.getGpa() == o2.getGpa())
-            return 0;
-        else if(o1.getGpa() < o2.getGpa())  // This is to create a descending order
-            return 1;
-        return -1;
-    }
-}
-//-------------------------------------------------
-class CreditHoursComparator implements Comparator<Student> {
-    //test
-    @Override
-    public int compare(Student o1, Student o2) {
-        if(o1.getCreditHours() == o2.getCreditHours())
-            return 0;
-        else if(o1.getCreditHours() < o2.getCreditHours())  // This is to create a descending order
-            return 1;
-        return -1;
-    }
-}
-//-------------------------------------------------
+//--------------------------------------------------
 abstract class Employee extends Person {
     protected String department;
 
@@ -510,7 +455,7 @@ abstract class Employee extends Person {
         this.department = department;
     }
 }
-//-------------------------------------------------
+//--------------------------------------------------
 class Faculty extends Employee {
 
     private String rank;
@@ -539,7 +484,7 @@ class Faculty extends Employee {
         System.out.println("---------------------------------------------------------------------------");
     }
 }
-//-------------------------------------------------
+//--------------------------------------------------
 class Staff extends Employee {
     private String status;
 
@@ -564,7 +509,7 @@ class Staff extends Employee {
         System.out.println("---------------------------------------------------------------------------");
     }
 }
-//-------------------------------------------------
+//--------------------------------------------------
 class Personnel {
     private Person[] list;  // private field = array of type Person
 
