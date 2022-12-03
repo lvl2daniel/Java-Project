@@ -302,6 +302,59 @@ public class Project2 {
     System.out.println("7-  Exit Program\n");
     System.out.print("\t  Enter your selection: ");
     }
+
+    // ID Check Format Method
+    private static boolean idFormat(String inputID) throws IdException {
+        String pattern = "^[A-z]{2}[0-9]{4}$";
+        boolean matches = Pattern.matches(pattern, inputID);
+        if (!matches)
+           throw new IdException("\n\t  Invalid ID format. Must be LetterLetterDigitDigitDigitDigit. Please try again.");
+        else return true;
+    }
+
+    // ID Input Method
+    private static String idInputCheck(Personnel list) {
+        Scanner sc = new Scanner (System.in);
+        String id;
+        id = sc.nextLine();
+        int index = list.search(id);
+        do {
+            try {
+                if (idFormat(id)) {
+                    if (index == -1)  // if not found in the list
+                        break;
+                    else if (list.getList()[index].getId().equalsIgnoreCase(id))
+                        throw new IdException("\n\t  Duplicate ID already exists. Please try again.");
+                    else
+                        break;
+                }
+            } catch (IdException e) {
+                System.out.println(e);
+            }
+            System.out.print("\n\t  ID: ");
+            id = sc.nextLine();
+            index = list.search(id);
+        } while(true);
+        return id;
+    }
+
+    // ID Search Method
+    private static String idSearchCheck() {
+        Scanner sc = new Scanner (System.in);
+        String search;
+        search = sc.nextLine();
+        do {
+            try {
+                if (idFormat(search))
+                    break;
+            } catch (IdException e) {
+                System.out.print(e);
+            }
+            System.out.print("\n\t  ID: ");
+            search = sc.nextLine();
+        } while(true);
+        return search;
+    }
 }
 
 //--------------------------------------------------
@@ -540,5 +593,51 @@ class Personnel {
                         return i;
                 }
         return -1;
+    }
+}
+//--------------------------------------------------
+class GpaComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student o1, Student o2) {
+        if(o1.getGpa() == o2.getGpa())
+            return 0;
+        else if(o1.getGpa() < o2.getGpa())  // This is to create a descending order
+            return 1;
+        return -1;
+    }
+}
+//--------------------------------------------------
+class CreditHoursComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student o1, Student o2) {
+        if(o1.getCreditHours() == o2.getCreditHours())
+            return 0;
+        else if(o1.getCreditHours() < o2.getCreditHours())  // This is to create a descending order
+            return 1;
+        return -1;
+    }
+}
+//--------------------------------------------------
+class IdException extends Exception {
+    String message;
+
+    // Getter and Setter (for the sake of OOP)
+    @Override
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    // Constructor
+    public IdException(String message) {
+        this.message = message;
+    }
+
+    // Method
+    @Override
+    public String toString() {
+        return message;
     }
 }
