@@ -271,12 +271,10 @@ public class Project2 {
                                     out.println();
                                     out.println();
                                 }
-                            } catch(IOException e)
-                                {
-                                    System.out.println("ERROR: File operations failed.");
-                                    e.printStackTrace();
-                                } finally
-                            {
+                            } catch(IOException e) {
+                                System.out.println("ERROR: File operations failed.");
+                                e.printStackTrace();
+                            } finally {
                                 if (out != null)
                                     out.close();
                             }
