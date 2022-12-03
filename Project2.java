@@ -170,7 +170,7 @@ public class Project2 {
                     case 6 -> {
                         //Case for Printing the information of a staff member.
                         Scanner idInput = new Scanner(System.in);
-                        System.out.print("\n\nEnter the Staff's id: ");
+                        System.out.print("\n\nEnter the Staff's ID: ");
                         String searchStaff = idSearchCheck();  // Make sure search ID format matches
                         int foundStaff = list.search(searchStaff);
                         if (foundStaff == -1) {
